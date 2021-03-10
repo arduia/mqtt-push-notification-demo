@@ -11,7 +11,7 @@ import org.eclipse.paho.android.service.MqttAndroidClient
 import org.eclipse.paho.client.mqttv3.*
 import java.lang.Exception
 
-class MQTTGateway(private val context: Context, private val clientId: String) {
+class MQTTGateway(context: Context, clientId: String) {
 
     private val _connectionStatus = ConflatedBroadcastChannel<ConnectionStatus>()
 
@@ -21,15 +21,12 @@ class MQTTGateway(private val context: Context, private val clientId: String) {
     private var messageReceivedCallback: MessageReceivedCallback? = null
 
     init {
-        _connectionStatus.sendBlocking(ConnectionStatus.Disconnected)
+        _connectionStatus.sendBlocking(ConnectionStatus.Disconnected) //Initial as Disconnected!
         observeConnectionStatus()
     }
 
     fun connect() {
         Log.d("MQTTGateway", "connect")
-        if (client.isConnected) {
-            Log.d("MQTTGateway", "isAlready connected.")
-        }
         _connectionStatus.sendBlocking(ConnectionStatus.Connecting)
         val connectOption = getConnectOption()
         try {
@@ -42,10 +39,7 @@ class MQTTGateway(private val context: Context, private val clientId: String) {
 
                 override fun onFailure(asyncActionToken: IMqttToken?, exception: Throwable?) {
                     _connectionStatus.sendBlocking(ConnectionStatus.Disconnected)
-                    if(client.isConnected){
-                        _connectionStatus.sendBlocking(ConnectionStatus.Connected)
-                    }
-
+                    Log.d("MQTT Gateway", "onFailure $exception")
                 }
             })
         } catch (e: Exception) {
@@ -68,7 +62,6 @@ class MQTTGateway(private val context: Context, private val clientId: String) {
 
     private fun observeConnectionStatus() {
         client.setCallback(object : MqttCallback {
-
             override fun connectionLost(cause: Throwable?) {
                 _connectionStatus.sendBlocking(ConnectionStatus.Disconnected)
                 Log.d("MQTTGateWay", "Disconnected")
@@ -98,7 +91,7 @@ class MQTTGateway(private val context: Context, private val clientId: String) {
         fun onReceived(topic: String?, message: String)
     }
 
-    companion object{
+    companion object {
         private const val IS_CLEAN_SESSION = false
         private const val IS_AUTOMATIC_RECONNECT = true
     }

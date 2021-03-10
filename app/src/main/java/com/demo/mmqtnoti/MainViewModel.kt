@@ -38,7 +38,4 @@ class MainViewModel(private val messageGateway: MQTTGateway): ViewModel() {
         messageGateway.disconnect()
     }
 
-    override fun onCleared() {
-        super.onCleared()
-    }
 }

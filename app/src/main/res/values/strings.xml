@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">MMQT Push Noti</string>
+    <string name="connection_status_suffix">MQTT is </string>
+    <string name="status_connecting">Connecting</string>
+    <string name="status_disconnected">Disconnected</string>
+    <string name="status_connected">Connected</string>
+    <string name="connect">Connect</string>
+    <string name="cancel">Cancel</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="topics">Topics</string>
+</resources>

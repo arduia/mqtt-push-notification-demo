@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MMQT Push Noti</string>
+    <string name="app_name">MQTT Push Notifications</string>
     <string name="connection_status_suffix">MQTT is </string>
     <string name="status_connecting">Connecting</string>
     <string name="status_disconnected">Disconnected</string>
